@@ -80,7 +80,7 @@ char *capt;
 int fps = DEFAULT_FPS;
 int bpp = 0; //current bytes per pixel
 int hwaccel = 1; //use hardware acceleration
-int grabmethod = 1;//standart MJPEG
+int grabmethod = 1;//default mmap(1) or read(0)
 int width = DEFAULT_WIDTH;
 int height = DEFAULT_HEIGHT;
 int winwidth=WINSIZEX;
@@ -88,7 +88,7 @@ int winheight=WINSIZEY;
 const char *mode="jpg"; /*jpg (default) or yuv*/
 int format = V4L2_PIX_FMT_MJPEG;
 
-/*currently it as no used - all variables are global*/
+/*currently it as no use - all variables are global*/
 //~ struct pt_data {
     //~ SDL_Surface **ptscreen;
 	//~ SDL_Overlay **ptoverlay;
@@ -274,6 +274,13 @@ combo_changed (GtkComboBox * combo, VidState * s)
 static void
 resolution_changed (GtkComboBox * Resolution, void *data)
 {
+	/* The new resolution is writen to conf file at exit    */
+	/* then is read back at start. This means that changing */
+	/* resolution implies a restart                         */
+	/* Must add popup confirming restart                    */
+	
+	/*Resolutions are hardcoded - should be given by driver */
+	
 	int index = gtk_combo_box_get_active(Resolution);
 	
 	switch (index) {
@@ -291,6 +298,8 @@ resolution_changed (GtkComboBox * Resolution, void *data)
 static void
 FrameRate_changed (GtkComboBox * FrameRate, void *data)
 {
+	/*Frame Rates are hardcoded - should be given by driver */
+	
 	int index = gtk_combo_box_get_active (FrameRate);
       	
 	switch (index) {
@@ -979,10 +988,13 @@ int main(int argc, char *argv[])
     
     if (strncmp(mode, "yuv", 3) == 0) {
 		format = V4L2_PIX_FMT_YUYV;
+		printf("Format is yuyv\n");
 	} else if (strncmp(mode, "jpg", 3) == 0) {
 		format = V4L2_PIX_FMT_MJPEG;
+		printf("Format is MJPEG\n");
 	} else {
 		format = V4L2_PIX_FMT_MJPEG;
+		printf("Format is Default MJPEG\n");
 	}
 	
 	gtk_init(&argc, &argv);
