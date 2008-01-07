@@ -40,9 +40,18 @@ init_videoIn(struct vdIn *vd, char *device, int width, int height,
     vd->videodevice = NULL;
     vd->status = NULL;
     vd->pictName = NULL;
-    vd->videodevice = (char *) calloc(1, 16 * sizeof(char));
-    vd->status = (char *) calloc(1, 100 * sizeof(char));
-    vd->pictName = (char *) calloc(1, 80 * sizeof(char));
+    if((vd->videodevice = (char *) calloc(1, 16 * sizeof(char)))==NULL){
+		printf("couldn't calloc memory for:vd->videodevice\n");
+		goto error;
+	}
+    if((vd->status = (char *) calloc(1, 100 * sizeof(char)))==NULL){
+		printf("couldn't calloc memory for:vd->status\n");
+		goto error;
+	}
+    if((vd->pictName = (char *) calloc(1, 80 * sizeof(char)))==NULL){
+		printf("couldn't calloc memory for:vd->pictName\n");
+		goto error;
+	}
     snprintf(vd->videodevice, 12, "%s", device);
     printf("video %s \n", vd->videodevice);
     vd->capAVI = FALSE;
@@ -77,8 +86,10 @@ init_videoIn(struct vdIn *vd, char *device, int width, int height,
     case V4L2_PIX_FMT_MJPEG:
 	vd->tmpbuffer =
 	    (unsigned char *) calloc(1, (size_t) vd->framesizeIn);
-	if (!vd->tmpbuffer)
-	    goto error;
+	if (!vd->tmpbuffer) {
+	   printf("couldn't calloc memory for:vd->tmpbuffer\n");
+		goto error;
+	}
 	vd->framebuffer =
 	    (unsigned char *) calloc(1,
 				     (size_t) vd->width * (vd->height +
@@ -93,14 +104,18 @@ init_videoIn(struct vdIn *vd, char *device, int width, int height,
 	goto error;
 	break;
     }
-    if (!vd->framebuffer)
+    if (!vd->framebuffer) {
+	printf("couldn't calloc memory for:vd->framebuffer\n");	
 	goto error;
+	}
     return 0;
   error:
     free(vd->videodevice);
     free(vd->status);
     free(vd->pictName);
-    close(vd->fd);
+    free(vd->tmpbuffer);
+	close(vd->fd);
+	
     return -1;
 }
 
@@ -711,4 +726,5 @@ input_free_controls (InputControl * control, int num_controls)
         }
     }
     free (control);
+	printf("cleaned allocations - 80%\n");
 }
