@@ -53,7 +53,7 @@ static int debug = 0;
 #define DEFAULT_IMAGE_FNAME "Image.bmp"
 #define DEFAULT_AVI_FNAME	"capture.avi"
 #define DEFAULT_FPS	25
-
+#define SDL_WAIT_TIME 10
 
 /*                      */
 #define ERR_NO_SOI 1
