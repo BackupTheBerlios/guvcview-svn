@@ -726,5 +726,5 @@ input_free_controls (InputControl * control, int num_controls)
         }
     }
     free (control);
-	printf("cleaned allocations - 80%\n");
+	printf("cleaned allocations - 80%%\n");
 }

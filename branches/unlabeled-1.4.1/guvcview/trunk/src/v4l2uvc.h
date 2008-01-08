@@ -28,8 +28,8 @@
 #include <sys/select.h>
 #include <linux/videodev.h>
 #include <gtk/gtk.h>
-#include "utils.h"
-
+#include "avilib.h"
+static int debug = 0;
 
 /*
  * Private V4L2 control identifiers from UVC driver.  - this seems to change acording to driver version
@@ -80,11 +80,11 @@ struct vdIn {
     int framesizeIn;
     int signalquit;
     int capAVI;
-    char *AVIFName;
+    const char *AVIFName;
     int fps;
     int getPict;
     int capImage;
-    char *ImageFName;
+    const char *ImageFName;
     int rawFrameCapture;
     /* raw frame capture */
     unsigned int fileCounter;
