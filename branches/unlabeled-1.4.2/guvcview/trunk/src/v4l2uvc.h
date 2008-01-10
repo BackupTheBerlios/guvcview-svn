@@ -160,3 +160,5 @@ input_enum_controls (struct vdIn * device, int * num_controls);
 
 void
 input_free_controls (InputControl * control, int num_controls);
+
+static int init_v4l2(struct vdIn *vd);
