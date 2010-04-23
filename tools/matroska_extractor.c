@@ -13,6 +13,9 @@
 # GNU General Public License for more details.
 */
 
+/* compile with: gcc matroska_extractor -o mkv_frame_extract
+# usage: mkv_frame_extract /path/to/mkv_file.mkv
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
